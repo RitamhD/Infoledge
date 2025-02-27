@@ -1,6 +1,17 @@
-{% extends 'base.html' %}
-{% block title %}Infoledge{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}InfoLedge{% endblock title %}
 
 {% block content %}
-    Landing page
-{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='landingpage_style.css') }}">
+    
+
+    <div class="content">
+        <h1>        
+        <img class="pen" src="../static/pen-draw.gif" alt="Pen-draw">
+            info<span>Ledge</span>
+        <img class="hat" src="../static/hat.png" alt="">
+        </h1>
+    </div>
+{% endblock content %}
+
