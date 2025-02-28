@@ -40,7 +40,7 @@ def show_credentials():
 def insert_into_credentials(user_name:str, user_email:str, user_password:str):
     try:
         conn, cursor = activate_connection()
-        query = "INSERT INTO credentials (user_name, user_email, user_password) VALUES (%s, %s, %s)"
+        query = "INSERT INTO credentials (user_name, user_email, user_password) VALUES (%s, %s, %s)"  
         cursor.execute(query, (user_name, user_email, user_password))
         conn.commit()
         status = "***Successfully stored data***"
@@ -101,7 +101,7 @@ def delete_from_credentials(user_email: str):
 
 
 #TODO   Backend:-
-app = Flask(__name__, template_folder='view')
+app = Flask(__name__, template_folder='view', static_folder='static')
 
 
 #   Landing page
@@ -109,6 +109,8 @@ app = Flask(__name__, template_folder='view')
 def landing_page():
     if request.method=='GET':
         return render_template('landing_page.html')
+    elif request.method=='POST':
+        return redirect(url_for('home'))    
 
 
 #   Form page
@@ -121,7 +123,9 @@ def form():
 #   Home page
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    if request.method=='GET':
+        return render_template('home.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
+    

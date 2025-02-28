@@ -6,12 +6,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='landingpage_style.css') }}">
     
 
-    <div class="content">
+    <header>
         <h1>        
-        <img class="pen" src="../static/pen-draw.gif" alt="Pen-draw">
+        <img class="pen" src="/static/resources/pen-draw.gif" alt="Pen-draw-gif">
             info<span>Ledge</span>
-        <img class="hat" src="../static/hat.png" alt="">
+        <img class="hat" src="/static/resources/hat.png" alt="scholar-hat">
         </h1>
+    </header>
+
+    <div class="content">
+        <form method="POST" action="/">
+            <button type="submit">GET STARTED</button>
+        </form>
     </div>
 {% endblock content %}
 
