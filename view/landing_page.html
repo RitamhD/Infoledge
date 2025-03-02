@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}InfoLedge{% endblock title %}
+
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='landingpage_style.css') }}">
+    
+    <header>
+        <h1>        
+        <img class="pen" src="/static/resources/pen-draw.gif" alt="Pen-draw-gif">
+            info<span>Ledge</span>
+        <img class="hat" src="/static/resources/hat.png" alt="scholar-hat">
+        </h1>
+    </header>
+
+    <div class="content">
+        <form method="POST" action="{{url_for('landing_page')}}">
+            <button type="submit">GET STARTED</button>
+        </form>
+    </div>
+{% endblock content %}
+

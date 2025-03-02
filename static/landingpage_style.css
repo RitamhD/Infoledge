@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+body {
+    background: url('resources/landingpage_background.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+    color: white;
+    text-align: center;
+}
+
+
+header h1 {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 100px;
+}
+header h1 span {
+    font-family: cursive;
+    opacity: 0.5;
+    background: linear-gradient(to right, #f76c49, #fddc66); 
+    background-clip: text; 
+    color: transparent;
+}
+
+.pen {
+    position: absolute;
+    top: 0;
+    left: 20%;  
+    height: 300px;
+    width: 400px;
+}
+
+.hat {
+    height: 100px;
+    width: 100px;
+}
+header h1 img{
+    filter: invert();
+}
+
+@media screen and (max-width: 655px){
+    .pen {
+        display: none;
+    }
+    header h1 {
+        font-size: 70px;
+    }
+    .hat {
+        height: 50px;
+        width: 50px;
+    }
+}
+@media screen and (max-width: 400px) {
+    .hat {
+        height: 40px;
+        width: 40px;
+    }
+}
+
+
+.content {
+    position: fixed;
+    bottom: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.content button {
+    padding: 1rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+}
+
+

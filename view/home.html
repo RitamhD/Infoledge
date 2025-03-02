@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+<link rel="stylesheet" href="homepage_style.css">
+
+{% block content %}
+
+{% block script %}{% endblock %}
+    <h1>This is home page</h1>
+    <form action="{{ url_for('logout') }}" method="POST">
+        <button type="submit">Logout</button>
+    </form>
+{% endblock %}
