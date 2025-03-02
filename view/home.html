@@ -1,11 +1,29 @@
 {% extends 'base.html' %}
 <link rel="stylesheet" href="homepage_style.css">
 
+
 {% block content %}
 
-{% block script %}{% endblock %}
-    <h1>This is home page</h1>
-    <form action="{{ url_for('logout') }}" method="POST">
-        <button type="submit">Logout</button>
-    </form>
+<h1>This is home page</h1>
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit">Logout</button>
+</form>
+
+<form action="{{ url_for('spotifyLogin') }}" method="POST">
+    <button type="submit">Login with Spotify</button>
+</form>
+{% endblock %}
+
+{% block script %}  
+<script>
+    window.onload = function() {
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    };
+</script>
 {% endblock %}
