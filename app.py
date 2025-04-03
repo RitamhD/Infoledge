@@ -1,6 +1,7 @@
 import os
 import requests
 import urllib.parse
+from functools import wraps
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify
@@ -16,6 +17,11 @@ oauthConfig = {
     "OAUTH_CLIENT_ID": os.getenv("OAUTH_CLIENT_ID"),
     "OAUTH_CLIENT_SECRET_KEY": os.getenv("OAUTH_CLIENT_SECRET_KEY"),
     "OAUTH_META_URL": os.getenv("OAUTH_META_URL"),
+}
+youtubeConfig = {
+    "YOUTUBE_API_KEY": os.getenv("YOUTUBE_API_KEY"),
+    "YOUTUBE_SEARCH_URL": os.getenv("YOUTUBE_SEARCH_URL"),
+    "YOUTUBE_VIDEO_URL": os.getenv("YOUTUBE_VIDEO_URL"),
 }
 
 
@@ -82,20 +88,40 @@ def logout():
     session.clear()
     return redirect(url_for('landing_page'))
 
+
+
+#----Login----
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("user"):  # Check if user exists in session
+            flash('Sign in required!')
+            return redirect(url_for('googleLogin'))  # Redirect to login page if not logged in
+        return f(*args, **kwargs)  # If logged in, continue with the route function
+    return decorated_function
+
+
 #----Home page----
 @app.route('/home', methods=['GET', 'POST'])
+@login_required
 def home():
     if request.method=='GET':
-        if session.get("user"):
-            return render_template('home.html')
-        else:
-            flash('Sign in required !')
-            return redirect(url_for('googleLogin'))
-    # if request.method=='POST':
-    #     action = request.form.get('action')
-    
+        return render_template('home.html')
+        
+    if request.method=='POST':
+        action = request.form.get('action')
+        if action == "codemirror":
+            return redirect(url_for('code_platform'))
+        
 
-#------Spotify-------
+
+
+#-----Code Platform-----
+@app.route('/code_platform')
+@login_required
+def code_platform():
+    return render_template('code_platform.html')
+
 
 
 if __name__ == '__main__':

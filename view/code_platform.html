@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='codemirror/codemirror-5.65.19/lib/codemirror.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='codemirror/codemirror-5.65.19/theme/dracula.css') }}">
+    
+    <div class="row my-4">
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingSelect">Preference</label>
+            <select class="form-select" id="autoSizingSelect">
+                <option selected>Choose...</option>
+                <option value="1">Python</option>
+                <option value="2">C++</option>
+                <option value="3">Java</option>
+            </select>
+        </div>
+        <div class="col d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Run</button>
+        </div>
+    </div>
+    <div class="row my-4">
+        <div class="col">
+            <textarea type="text" id="editor" class="form-control" rows="4" placeholder="Write your code here..." aria-label="Details"></textarea>
+        </div>
+    </div>
+
+
+    <!-- <script>
+        var editorPython = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            mode: "text/x-python",
+            theme: "dracula",
+            lineNumbers: true,
+            autoCloseBrackets: true
+        });
+        var width = window.innerWidth;
+        editorPython.setSize(0.7*width, "500");
+    </script>
+     -->
+    <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/mode/python/python.js') }}"></script>
+    <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/lib/codemirror.js') }}"></script>
+    <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/mode/clike/clike.js') }}"></script>
+    <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/addon/edit/closebrackets.js')}}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

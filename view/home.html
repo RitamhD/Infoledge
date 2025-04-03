@@ -1,26 +1,46 @@
 {% extends 'base.html' %}
-<link rel="stylesheet" href="homepage_style.css">
 
 
 {% block content %}
 
-<h1>This is home page</h1>
-<form action="{{ url_for('logout') }}" method="POST">
-    <button type="submit">Logout</button>
-</form>
+<link rel="stylesheet" href= "{{ url_for('static', filename='homepage_style.css') }}">
 
-{% endblock %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <script>
+        var msg = {{messages|tojson}};
+        alert(msg);
+    </script>
+{% endif %}
+{% endwith %}
 
-{% block script %}  
-<script>
-    window.onload = function() {
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                alert("{{ message }}");
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
-    };
-</script>
+<header>
+    <a href="#">About Us</a>
+    <a href="#">Services</a>
+    <div id="logout">
+        <form action="{{ url_for('logout') }}" method="POST">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</header>
+
+<main>
+    <div class="content">
+
+        <div class="content_options">
+            <button class="option_buttons" id="recommend_courses">Suggest courses</button>
+        </div>
+
+        <div class="content_options">
+            <form action=" {{ url_for('home') }}" method="POST">
+                <button type="submit" name="action" value="codemirror" class="option_buttons" id="code_platform">Let's code</button>
+            </form>
+        </div>
+
+    </div>
+</main>
+
+
+
+
 {% endblock %}

@@ -3,3 +3,4 @@ python-dotenv
 requests
 Authlib
 mysql-connector-python
+functools
