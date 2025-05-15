@@ -1,3 +1,5 @@
 .env
 sql_script.sql
 sql.py
+venv
+.vercel

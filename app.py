@@ -1,10 +1,9 @@
 import os
 import requests
-import urllib.parse
 from functools import wraps
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify
+from flask import Flask, render_template, url_for, redirect, request, session, flash
 from authlib.integrations.flask_client import OAuth
 # import mysql.connector
 
@@ -18,11 +17,11 @@ oauthConfig = {
     "OAUTH_CLIENT_SECRET_KEY": os.getenv("OAUTH_CLIENT_SECRET_KEY"),
     "OAUTH_META_URL": os.getenv("OAUTH_META_URL"),
 }
-youtubeConfig = {
-    "YOUTUBE_API_KEY": os.getenv("YOUTUBE_API_KEY"),
-    "YOUTUBE_SEARCH_URL": os.getenv("YOUTUBE_SEARCH_URL"),
-    "YOUTUBE_VIDEO_URL": os.getenv("YOUTUBE_VIDEO_URL"),
-}
+# youtubeConfig = {
+#     "YOUTUBE_API_KEY": os.getenv("YOUTUBE_API_KEY"),
+#     "YOUTUBE_SEARCH_URL": os.getenv("YOUTUBE_SEARCH_URL"),
+#     "YOUTUBE_VIDEO_URL": os.getenv("YOUTUBE_VIDEO_URL"),
+# }
 
 
 # #----Backend----
@@ -38,15 +37,15 @@ oauth.register("Infoledge",
                client_secret = oauthConfig.get("OAUTH_CLIENT_SECRET_KEY"),
                server_metadata_url = oauthConfig.get("OAUTH_META_URL"),
                client_kwargs = {
-                   "scope" : "openid profile email https://www.googleapis.com/auth/user.birthday.read",
+                   "scope" : "openid profile email",
                }
                )
 
 
-@app.before_request
-def make_session_permanent():
-    if session.get("user"):
-        session.permanent = True
+# @app.before_request
+# def make_session_permanent():
+#     if session.get("user"):
+#         session.permanent = True
 
 #----Landing page----
 @app.route('/', methods=['GET', 'POST'])
@@ -125,5 +124,5 @@ def code_platform():
 
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=flaskConfig.get("FLASK_PORT"), debug=True)
+    app.run()
     

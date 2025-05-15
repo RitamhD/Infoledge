@@ -4,27 +4,11 @@ var editorPython = CodeMirror.fromTextArea(document.getElementById('editor'), {
     version: 3,
     theme: "dracula",
     lineNumbers: true,
+    defaultTextHeight: 10,
     autoCloseBrackets: true,
     indentWithTabs: true,
     smartIndent: false,
-    // indentOnInput: true,
-    // extraKeys: {
-    //     "Enter": function(cm) {
-    //         var cursor = cm.getCursor();
-    //         var line = cm.getLine(cursor.line);
-            
-    //         // Check if the current line ends with a colon (for Python indentation style)
-    //         if (line.trim().endsWith(":")) {
-    //             // If so, insert a newline and indent it based on the previous line
-    //             cm.execCommand("newlineAndIndent");
-    //         } else {
-    //             // Otherwise, just insert a newline without special indentation
-    //             cm.execCommand("newlineAndIndentContinueSelection");
-    //         }
-    //     }
-    // }
-});
-
+}); 
 // var editorCpp = CodeMirror.fromTextArea(document.getElementById('editor'), {
 //     mode: "text/x-c++src",
 //     theme: "dracula",
@@ -40,12 +24,15 @@ var editorPython = CodeMirror.fromTextArea(document.getElementById('editor'), {
 // });
 
 var width = window.innerWidth;
-editorPython.setSize(0.7*width, "500");
-// editorCpp.setSize(0.7*width, "500")
-// editorJava.setSize(0.7*width, "500")
+editorPython.setSize(0.7*width, "600");
+// editorCpp.setSize(0.7*width, "600")
+// editorJava.setSize(0.7*width, "600")
 
 
-
+let defaultText = "#---Let's code---\nprint('Hello World!')";
+let blankLines = '\n'.repeat(5);
+editorPython.getWrapperElement().style.fontSize = '16px';
+editorPython.setValue(defaultText+blankLines);
 
 
 
