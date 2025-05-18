@@ -56,7 +56,6 @@ editorPython.setValue(defaultText+blankLines);
 
 
 
-
 // // Select all buttons with the class 'playButton'
 // document.querySelectorAll('.playButton').forEach(function(button) {
 //     button.addEventListener('click', function() {

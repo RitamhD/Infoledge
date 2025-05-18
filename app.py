@@ -1,11 +1,13 @@
 import os
+import json
 import requests
 from functools import wraps
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from flask import Flask, render_template, url_for, redirect, request, session, flash
+from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify
 from authlib.integrations.flask_client import OAuth
 # import mysql.connector
+from controllers import scrapping
 
 load_dotenv()
 flaskConfig = {
@@ -102,7 +104,7 @@ def login_required(f):
 
 #----Home page----
 @app.route('/home', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def home():
     if request.method=='GET':
         return render_template('home.html')
@@ -111,18 +113,39 @@ def home():
         action = request.form.get('action')
         if action == "codemirror":
             return redirect(url_for('code_platform'))
+        if action == "courses":
+            return redirect(url_for('courses'))
         
 
 
 
 #-----Code Platform-----
 @app.route('/code_platform')
-@login_required
+# @login_required
 def code_platform():
     return render_template('code_platform.html')
 
+@app.route('/courses', methods=['GET','POST'])
+# @login_required
+def courses():
+    if request.method=='POST':
+        action = request.form.get('action')
+        if action=='search_courses':
+            query=request.form.get('query')
+            # videos = scrapping.get_video_list(query=query)
+            with open("./data/resources.json", 'r') as f:
+                videos = json.load(f) 
+            if isinstance(videos, Exception):
+                return jsonify("Error: An error occured while fetching the courses"),500
+            else:
+                # with open("data/resources.json", 'w') as f:
+                    # f.write(json.dumps(videos))
+                return render_template('courses.html', videos=videos or [])
+    # with open("./data/resources.json", 'r') as f:
+        # videos = json.loads(f.readlines())
+    return render_template('courses.html', videos=[])
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
     

@@ -8,7 +8,7 @@
 {% with messages = get_flashed_messages() %}
 {% if messages %}
     <script>
-        var msg = {{messages|tojson}};
+        var msg = {{ messages|tojson }};
         alert(msg);
     </script>
 {% endif %}
@@ -28,7 +28,9 @@
     <div class="content">
 
         <div class="content_options">
-            <button class="option_buttons" id="recommend_courses">Suggest courses</button>
+            <form action="{{ url_for('home') }} " method="post">
+                <button type="submit" name="action" value="courses" class="option_buttons" id="recommend_courses">Suggest courses</button>
+            </form>
         </div>
 
         <div class="content_options">

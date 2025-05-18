@@ -88,4 +88,165 @@ header h1 img{
     border-radius: 50px;
 }
 
+body.modal-open header,
+body.modal-open .get_started {
+    filter: blur(4px);
+    pointer-events: none;
+    user-select: none;
+}
 
+.get_started {
+    display: flex;
+    justify-content: center;
+    margin: 2.5rem 0;
+}
+
+#getStartedBtn {
+    background: #2d1b06;              /* Deep brown for contrast */
+    color: #fff;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    border: 2.5px solid #fff;         /* White ring border */
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+    transition: background 0.18s, box-shadow 0.18s, transform 0.13s, border-color 0.18s;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    letter-spacing: 0.02em;
+    outline: none;
+    display: inline-block;
+    text-align: center;
+}
+
+#getStartedBtn:hover,
+#getStartedBtn:focus {
+    background: #43260d;              /* Slightly lighter brown on hover */
+    border-color: whitesmoke;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+    transform: translateY(-2px) scale(1.01);
+}
+
+#getStartedBtn:active {
+    background: #1a1104;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    transform: none;
+}
+
+#getStartedBtn:disabled {
+    background: #a38e7b;
+    color: #f3f3f3;
+    border-color: #eee;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+
+/* Modal overlay */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(40, 50, 60, 0.28);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Show modal */
+.modal.open {
+    display: flex;
+}
+
+/* Modal box */
+.modal-content {
+    background: #fff;
+    padding: 2.2rem 2rem 2rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(40,50,60,0.18);
+    text-align: center;
+    min-width: 320px;
+    max-width: 90vw;
+    position: relative;
+}
+
+.modal-content h3 {
+    margin-bottom: 0.5rem;
+    color: #2d3a4b;
+    font-weight: 700;
+}
+
+.modal-content p {
+    margin-bottom: 1.5rem;
+    color: #555;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* Actions: side by side on desktop, stacked on mobile */
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Button styles */
+.modal-btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.18s;
+    min-width: 120px;
+    text-align: center;
+}
+
+.login-btn {
+    height: 50px;
+    width: 50px;
+    background: transparent;
+    color: #fff;
+    display: flex;               /* Force button to use flexbox */
+    align-items: center;         /* Center image vertically */
+    justify-content: center;     /* Center image horizontally */
+    padding: 0;                  /* Remove default padding */
+    border: none;                /* Optional: remove border */
+}
+
+/* Make the image fill the button */
+.login-btn img {
+    width: 60%;                  /* or 100% for full coverage */
+    height: 60%;
+    object-fit: contain;         /* Keep icon aspect ratio */
+    display: block;
+}
+
+
+.no-thanks-btn {
+    /* background: #e0e0e0; */
+    color: rgba(2, 2, 175, 0.806);
+}
+
+.no-thanks-btn:hover {
+    background: #bdbdbd34;
+}
+
+/* Responsive: stack buttons on small screens */
+@media (max-width: 500px) {
+    .modal-content {
+        min-width: 90vw;
+        padding: 1.2rem 0.5rem;
+    }
+    .modal-actions {
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+}

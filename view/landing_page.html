@@ -13,10 +13,61 @@
         </h1>
     </header>
 
-    <div class="content">
+    <!-- <div class="content">
         <form method="POST" action="{{url_for('landing_page')}}">
             <button type="submit">GET STARTED</button>
         </form>
-    </div>
-{% endblock content %}
+    </div> -->
 
+    <div class="get_started">
+        <button id="getStartedBtn">GET STARTED</button>
+    </div>
+
+<!-- Modal Popup -->
+    <div id="choiceModal" class="modal">
+        <div class="modal-content">
+            <h3>Welcome!</h3>
+            <p>Do you want to login?</p>
+            <div class="modal-actions">
+                <form method="POST" action="{{url_for('landing_page')}}">
+                    <button type="submit" class="modal-btn login-btn"><img src="/static/resources/google-icon-logo-svgrepo-com.svg" alt="google"></button>
+                </form>
+                <a href="{{ url_for('home') }}" class="modal-btn no-thanks-btn"><u>Skip for now</u>...</a>
+            </div>
+        </div>
+    </div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const modal = document.getElementById('choiceModal');
+        const body = document.body;
+        const closeModal = document.getElementById('closeModal');
+        
+        getStartedBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('open');
+            body.classList.add('modal-open');
+        });
+        
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('open');
+                body.classList.remove('modal-open');
+            }
+        });
+        
+        if (closeModal) {
+            closeModal.addEventListener('click', function() {
+                modal.classList.remove('open');
+                body.classList.remove('modal-open');
+            });
+        }
+    });
+</script>
+    
+{% endblock content %}
+    
+    
