@@ -1,6 +1,0 @@
-flask
-requests
-Authlib
-Jinja2
-python-dotenv
-webdriver-manager

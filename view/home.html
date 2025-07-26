@@ -4,6 +4,7 @@
 {% block content %}
 
 <link rel="stylesheet" href= "{{ url_for('static', filename='homepage_style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='chatbot_style.css') }}">
 
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -43,6 +44,21 @@
 </main>
 
 
+<!-- Chatbot section -->
+  <button id="chat-toggle" aria-expanded="false" aria-controls="chat-container" aria-label="Open chat" title="Open chat">
+  ask AI
+  </button>
+
+  <div id="chat-container" aria-hidden="true">
+    <div id="chatbox"></div>
+    <div class="input-row">
+      <input id="user-input" type="text" placeholder="Ask your doubt..." autocomplete="off" />
+      <button id="send">Send</button>
+    </div>
+  </div>
+
+
+  <script src="{{ url_for('static', filename='chatbot_script.js') }}"></script>
 
 
 {% endblock %}

@@ -1,0 +1,20 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore environment files
+.env
+
+# Ignore version control
+.git
+.gitignore
+
+# Ignore any log files
+*.log
+
+# Other
+sql.py
+sql_script.sql
+vercel.json
+.vercel
+venv/

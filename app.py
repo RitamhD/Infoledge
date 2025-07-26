@@ -4,10 +4,15 @@ import requests
 from functools import wraps
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify
+from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify, Response
 from authlib.integrations.flask_client import OAuth
 # import mysql.connector
 from controllers import scrapping
+from langchain_core.chat_history import InMemoryChatMessageHistory
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+
 
 load_dotenv()
 flaskConfig = {
@@ -132,20 +137,71 @@ def courses():
         action = request.form.get('action')
         if action=='search_courses':
             query=request.form.get('query')
-            # videos = scrapping.get_video_list(query=query)
-            with open("./data/resources.json", 'r') as f:
-                videos = json.load(f) 
-            if isinstance(videos, Exception):
-                return jsonify("Error: An error occured while fetching the courses"),500
-            else:
-                # with open("data/resources.json", 'w') as f:
-                    # f.write(json.dumps(videos))
-                return render_template('courses.html', videos=videos or [])
-    # with open("./data/resources.json", 'r') as f:
-        # videos = json.loads(f.readlines())
+            try:
+                videos = scrapping.get_video_list(query=query)
+            except Exception as e:
+                with open("./data/resources.json", 'r') as f:
+                    videos = json.load(f)
+                print(f"Scraping error: {e}")
+
+            return render_template('courses.html', videos=videos or [])
     return render_template('courses.html', videos=[])
 
 
+
+#---AI Chatbot---
+store = {}
+def get_session_history(session_id: str):
+    if session_id not in store:
+        store[session_id] = InMemoryChatMessageHistory()
+    return store[session_id]
+
+llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash', temperature=0.3, max_tokens=100, api_key=os.getenv('GEMINI_KEY'), stream=True)
+chain = RunnableWithMessageHistory(llm, get_session_history)
+
+
+@app.route('/chat', methods=["POST", "GET"])
+def chat():
+    data = request.get_json(force=True)
+    user_message = data.get('message', "").strip()
+    if not user_message:
+        return "No message from user", 400
+    
+    session_id = session.get('chat_session_id')
+    if not session_id:
+        session_id = os.urandom(8).hex()
+        session['chat_session_id'] = session_id
+    
+    response = chain.invoke(
+        user_message,
+        config={'configurable': {'session_id': session_id}}
+    )
+    return jsonify({'answer': str(response.content)})
+            
+
+@app.route('/stream-chat', methods=['POST'])
+def stream_chat():
+    data = request.get_json(force=True)
+    user_message = data.get('message', "").strip()
+    if not user_message:
+        return 'No message from user', 400
+    
+    session_id = session.get('chat_session_id')
+    if not session_id:
+        session_id = os.urandom(8).hex()
+        session['chat_session_id'] = session_id
+
+    def generate():
+        for chunk in chain.stream(
+            user_message,
+            config={'configurable': {'session_id': session_id}}
+        ):
+            yield chunk.content
+        
+    return Response(generate(), content_type='text/plain; charset=utf-8')
+
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")
     
