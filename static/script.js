@@ -1,4 +1,35 @@
 
+
+function playVideo(container){
+    const video = container.querySelector('video');
+    if (video){
+        video.play();
+    }
+}
+
+function pauseVideo(container){
+    const video = container.querySelector('video');
+    if (video){
+        video.pause();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var editorPython = CodeMirror.fromTextArea(document.getElementById('editor'), {
     name: "python",
     version: 3,
@@ -33,7 +64,6 @@ let defaultText = "#---Let's code---\nprint('Hello World!')";
 let blankLines = '\n'.repeat(5);
 editorPython.getWrapperElement().style.fontSize = '16px';
 editorPython.setValue(defaultText+blankLines);
-
 
 
 

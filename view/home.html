@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %} Home {% endblock title %}
 
 {% block content %}
 
 <link rel="stylesheet" href= "{{ url_for('static', filename='homepage_style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='chatbot_style.css') }}">
-
 {% with messages = get_flashed_messages() %}
 {% if messages %}
     <script>
@@ -20,29 +20,31 @@
     <a href="#">Services</a>
     <div id="logout">
         <form action="{{ url_for('logout') }}" method="POST">
-            <button type="submit">Logout</button>
+            <button type="submit">
+                <img src="../static/resources/logout.png" alt="Logout">
+            </button>
         </form>
     </div>
 </header>
 
 <main>
     <div class="content">
-
-        <div class="content_options">
+        <h1>Choose your option</h1>
+        <div class="content_options" onmouseenter="playVideo(this)" onmouseleave="pauseVideo(this)">
+            <video src="../static/resources/courses.mp4" muted loop class="hover-video"></video>
             <form action="{{ url_for('home') }} " method="post">
                 <button type="submit" name="action" value="courses" class="option_buttons" id="recommend_courses">Suggest courses</button>
             </form>
         </div>
 
-        <div class="content_options">
+        <div class="content_options" onmouseenter="playVideo(this)" onmouseleave="pauseVideo(this)">
+            <video src="../static/resources/typing.mp4" muted loop class="hover-video"></video>
             <form action=" {{ url_for('home') }}" method="POST">
                 <button type="submit" name="action" value="codemirror" class="option_buttons" id="code_platform">Let's code</button>
             </form>
         </div>
-
     </div>
 </main>
-
 
 <!-- Chatbot section -->
   <button id="chat-toggle" aria-expanded="false" aria-controls="chat-container" aria-label="Open chat" title="Open chat">
@@ -59,6 +61,6 @@
 
 
   <script src="{{ url_for('static', filename='chatbot_script.js') }}"></script>
-
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 {% endblock %}
