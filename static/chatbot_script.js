@@ -79,7 +79,7 @@ document.getElementById("send").addEventListener("click", async () => {
       if (value) {
         const chunk = decoder.decode(value, { stream: true });
         accumulatedText += chunk;
-        botMessageDiv.textContent = accumulatedText;
+        botMessageDiv.innerHTML = DOMPurify.sanitize(marked.parse(accumulatedText));
         document.getElementById("chatbox").scrollTop = document.getElementById("chatbox").scrollHeight;
       }
       done = doneReading;

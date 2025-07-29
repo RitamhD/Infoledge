@@ -10,6 +10,7 @@ from authlib.integrations.flask_client import OAuth
 from controllers import scrapping
 from langchain_core.chat_history import InMemoryChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_core.messages import SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 
@@ -153,10 +154,12 @@ def courses():
 store = {}
 def get_session_history(session_id: str):
     if session_id not in store:
-        store[session_id] = InMemoryChatMessageHistory()
+        history = InMemoryChatMessageHistory()
+        history.add_message(SystemMessage(content="You are a helpful assistant. Only answer in brief (within 100 words)."),)
+        store[session_id] = history
     return store[session_id]
 
-llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash', temperature=0.3, max_tokens=100, api_key=os.getenv('GEMINI_KEY'), stream=True)
+llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash', temperature=0.3, max_tokens=100, api_key=os.getenv('GEMINI_KEY'))
 chain = RunnableWithMessageHistory(llm, get_session_history)
 
 
@@ -176,7 +179,7 @@ def chat():
         user_message,
         config={'configurable': {'session_id': session_id}}
     )
-    return jsonify({'answer': str(response.content)})
+    return jsonify({'answer': response.content})
             
 
 @app.route('/stream-chat', methods=['POST'])
