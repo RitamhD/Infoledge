@@ -102,7 +102,7 @@ body.modal-open .get_started {
 }
 
 #getStartedBtn {
-    background: #2d1b06;              /* Deep brown for contrast */
+    background: #2d1b06;              
     color: #fff;
     padding: 0.75rem 2rem;
     font-size: 1.1rem;
@@ -120,7 +120,7 @@ body.modal-open .get_started {
 
 #getStartedBtn:hover,
 #getStartedBtn:focus {
-    background: #43260d;              /* Slightly lighter brown on hover */
+    background: #43260d;              
     border-color: whitesmoke;
     box-shadow: 0 4px 16px rgba(0,0,0,0.13);
     transform: translateY(-2px) scale(1.01);
@@ -213,18 +213,18 @@ body.modal-open .get_started {
     width: 50px;
     background: transparent;
     color: #fff;
-    display: flex;               /* Force button to use flexbox */
-    align-items: center;         /* Center image vertically */
-    justify-content: center;     /* Center image horizontally */
-    padding: 0;                  /* Remove default padding */
-    border: none;                /* Optional: remove border */
+    display: flex;               
+    align-items: center;         
+    justify-content: center;     
+    padding: 0;                  
+    border: none;                
 }
 
-/* Make the image fill the button */
+
 .login-btn img {
-    width: 60%;                  /* or 100% for full coverage */
+    width: 60%;                  
     height: 60%;
-    object-fit: contain;         /* Keep icon aspect ratio */
+    object-fit: contain;         
     display: block;
 }
 

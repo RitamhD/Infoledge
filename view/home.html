@@ -32,7 +32,7 @@
         <h1>Choose your option</h1>
         <div class="content_options" onmouseenter="playVideo(this)" onmouseleave="pauseVideo(this)">
             <video src="../static/resources/courses.mp4" muted loop class="hover-video"></video>
-            <form action="{{ url_for('home') }} " method="post">
+            <form action="{{ url_for('home') }} " method="POST">
                 <button type="submit" name="action" value="courses" class="option_buttons" id="recommend_courses">Suggest courses</button>
             </form>
         </div>

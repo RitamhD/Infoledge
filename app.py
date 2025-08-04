@@ -8,12 +8,8 @@ from flask import Flask, render_template, url_for, redirect, request, session, f
 from authlib.integrations.flask_client import OAuth
 # import mysql.connector
 from controllers import scrapping
-from langchain_core.chat_history import InMemoryChatMessageHistory
-from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_core.messages import SystemMessage
-from langchain_google_genai import ChatGoogleGenerativeAI
-
-
+from chat_model_setup import Model
+from recommender_model import Recommender
 
 load_dotenv()
 flaskConfig = {
@@ -25,14 +21,9 @@ oauthConfig = {
     "OAUTH_CLIENT_SECRET_KEY": os.getenv("OAUTH_CLIENT_SECRET_KEY"),
     "OAUTH_META_URL": os.getenv("OAUTH_META_URL"),
 }
-# youtubeConfig = {
-#     "YOUTUBE_API_KEY": os.getenv("YOUTUBE_API_KEY"),
-#     "YOUTUBE_SEARCH_URL": os.getenv("YOUTUBE_SEARCH_URL"),
-#     "YOUTUBE_VIDEO_URL": os.getenv("YOUTUBE_VIDEO_URL"),
-# }
 
 
-# #----Backend----
+# #----Routes----# #
 app = Flask(__name__, template_folder='view', static_folder='static')
 
 app.config['SECRET_KEY'] = flaskConfig.get("FLASK_SECRET_KEY")
@@ -47,7 +38,7 @@ oauth.register("Infoledge",
                client_kwargs = {
                    "scope" : "openid profile email",
                }
-               )
+)
 
 
 # @app.before_request
@@ -120,7 +111,7 @@ def home():
         if action == "codemirror":
             return redirect(url_for('code_platform'))
         if action == "courses":
-            return redirect(url_for('courses'))
+            return redirect(url_for('recommend_courses'))
         
 
 
@@ -131,37 +122,47 @@ def home():
 def code_platform():
     return render_template('code_platform.html')
 
-@app.route('/courses', methods=['GET','POST'])
-# @login_required
-def courses():
-    if request.method=='POST':
-        action = request.form.get('action')
-        if action=='search_courses':
-            query=request.form.get('query')
-            try:
-                videos = scrapping.get_video_list(query=query)
-            except Exception as e:
-                with open("./data/resources.json", 'r') as f:
-                    videos = json.load(f)
-                print(f"Scraping error: {e}")
 
-            return render_template('courses.html', videos=videos or [])
-    return render_template('courses.html', videos=[])
+
+
+#-----Courses Platform-----
+@app.route('/recommend_courses', methods=['GET', 'POST'])
+# @login_required
+def recommend_courses():
+    if request.method == 'POST':
+        data = request.get_json()
+        interest = data.get('interest', "")
+        level = data.get('level', "")
+        language = data.get('language', "")
+        query = f"{level} level course in {interest} taught in {language}"
+        try:
+            recommender = Recommender()
+            recommendations = recommender.getRecommendation(query)
+            return jsonify(recommendations)
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    return render_template('courses.html')
+
+
+@app.route('/recommend', methods=['POST'])
+def recommend():
+    data = request.get_json()
+    query = data.get('query', "")
+    try:
+        recommender = Recommender()
+        recommendations = recommender.getRecommendation(query)
+        # print(recommendations)
+        return jsonify(recommendations)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+
 
 
 
 #---AI Chatbot---
-store = {}
-def get_session_history(session_id: str):
-    if session_id not in store:
-        history = InMemoryChatMessageHistory()
-        history.add_message(SystemMessage(content="You are a helpful assistant. Only answer in brief (within 100 words)."),)
-        store[session_id] = history
-    return store[session_id]
-
-llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash', temperature=0.3, max_tokens=100, api_key=os.getenv('GEMINI_KEY'))
-chain = RunnableWithMessageHistory(llm, get_session_history)
-
 
 @app.route('/chat', methods=["POST", "GET"])
 def chat():
@@ -174,7 +175,9 @@ def chat():
     if not session_id:
         session_id = os.urandom(8).hex()
         session['chat_session_id'] = session_id
-    
+        
+    model = Model()
+    chain = model.getChain()
     response = chain.invoke(
         user_message,
         config={'configurable': {'session_id': session_id}}
@@ -193,7 +196,9 @@ def stream_chat():
     if not session_id:
         session_id = os.urandom(8).hex()
         session['chat_session_id'] = session_id
-
+        
+    model = Model()
+    chain = model.getChain()
     def generate():
         for chunk in chain.stream(
             user_message,
@@ -206,5 +211,5 @@ def stream_chat():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    app.run(host='0.0.0.0')
     
