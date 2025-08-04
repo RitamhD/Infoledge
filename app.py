@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify, Response
 from authlib.integrations.flask_client import OAuth
 # import mysql.connector
-from controllers import scrapping
 from chat_model_setup import Model
 from recommender_model import Recommender
 
