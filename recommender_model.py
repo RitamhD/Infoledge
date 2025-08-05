@@ -1,9 +1,9 @@
-from langchain_community.embeddings import SentenceTransformerEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
 
 class Recommender:
     def __init__(self):
-        self.embedding_model = SentenceTransformerEmbeddings(model_name='all-MiniLM-L6-v2')
+        self.embedding_model = HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2')
         self.vectorstore = Chroma(
             embedding_function=self.embedding_model,
             persist_directory='controllers/model/embeddings',
