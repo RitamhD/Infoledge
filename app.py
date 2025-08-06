@@ -203,4 +203,5 @@ def stream_chat():
         
     return Response(generate(), content_type='text/plain; charset=utf-8')
 
-    
+# if __name__=='__main__':
+#     app.run(host='0.0.0.0', port=5000)
