@@ -3,3 +3,5 @@ sql_script.sql
 sql.py
 venv/
 .vercel
+infoledge9966.pem
+__pycache__/

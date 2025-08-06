@@ -20,9 +20,11 @@ oauthConfig = {
     "OAUTH_CLIENT_SECRET_KEY": os.getenv("OAUTH_CLIENT_SECRET_KEY"),
     "OAUTH_META_URL": os.getenv("OAUTH_META_URL"),
 }
+# Load the models
+chat_model = Model()
+recommender = Recommender()
 
 
-# #----Routes----# #
 app = Flask(__name__, template_folder='view', static_folder='static')
 
 app.config['SECRET_KEY'] = flaskConfig.get("FLASK_SECRET_KEY")
@@ -39,6 +41,7 @@ oauth.register("Infoledge",
                }
 )
 
+# #*----Routes----*# #
 
 # @app.before_request
 # def make_session_permanent():
@@ -135,7 +138,6 @@ def recommend_courses():
         language = data.get('language', "")
         query = f"{level} level course in {interest} taught in {language}"
         try:
-            recommender = Recommender()
             recommendations = recommender.getRecommendation(query)
             return jsonify(recommendations)
         except Exception as e:
@@ -148,15 +150,11 @@ def recommend():
     data = request.get_json()
     query = data.get('query', "")
     try:
-        recommender = Recommender()
         recommendations = recommender.getRecommendation(query)
         # print(recommendations)
         return jsonify(recommendations)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-
 
 
 
@@ -175,8 +173,7 @@ def chat():
         session_id = os.urandom(8).hex()
         session['chat_session_id'] = session_id
         
-    model = Model()
-    chain = model.getChain()
+    chain = chat_model.getChain()
     response = chain.invoke(
         user_message,
         config={'configurable': {'session_id': session_id}}
@@ -196,8 +193,7 @@ def stream_chat():
         session_id = os.urandom(8).hex()
         session['chat_session_id'] = session_id
         
-    model = Model()
-    chain = model.getChain()
+    chain = chat_model.getChain()
     def generate():
         for chunk in chain.stream(
             user_message,
@@ -207,8 +203,4 @@ def stream_chat():
         
     return Response(generate(), content_type='text/plain; charset=utf-8')
 
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
     
