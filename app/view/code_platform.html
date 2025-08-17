@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} Let's Code {% endblock title %}
+
+{% block content %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='code_platform.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='codemirror/codemirror-5.65.19/lib/codemirror.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='codemirror/codemirror-5.65.19/theme/dracula.css') }}">
+  
+    <div class="container">
+        <div class="top-bar">
+          <select id="languageSelect">
+            <option value="" selected>Python</option>
+            <option value="">C++</option>
+            <option value="">Java</option>
+          </select>
+          <select id="fontSizeSelect">
+            <option disabled selected>Font size</option>
+            <option value="">12</option>
+            <option value="">14</option>
+            <option value="">16</option>
+            <option value="">18</option>
+            <option value="">20</option>
+          </select>
+          <div class="buttons">
+            <img id="ai_help" src="#" alt="AI help">
+            <button id="runBtn">Run ▶</button>
+          </div>
+        </div>
+    
+        <div class="main">
+          <textarea type="text" id="editor" placeholder="Write your code">/*---Let's code---*/</textarea>
+          <div class="io-panel">
+            <div>
+              <label class="io" for="Input">Input</label>
+              <textarea></textarea>
+            </div>
+            <div>
+              <label class="io" for="Output">Output</label>
+              <textarea></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+
+  <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/lib/codemirror.js') }}"></script>
+  <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/mode/clike/clike.js') }}"></script>
+  <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/mode/python/python.js') }}"></script>
+  <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/addon/edit/closebrackets.js')}}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

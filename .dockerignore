@@ -1,22 +1,16 @@
-# Ignore Python cache
+# Python cache files
 __pycache__/
 *.pyc
 
-# Ignore environment files
+# environment files
 .env
 
-# Ignore version control
+# version control
 .git
 .gitignore
 
-# Ignore any log files
+# log files
 *.log
 
-# Other
-sql.py
-sql_script.sql
-vercel.json
-.vercel
+# virtual environment
 venv/
-
-infoledge9966.pem
