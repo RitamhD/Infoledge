@@ -5,17 +5,22 @@
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='landingpage_style.css') }}">
     
-    <header>
-        <h1>
-        <img class="pen" src="{{ url_for('static', filename='resources/pen-draw.gif') }}" alt="Pen-draw-gif">
-            info<span>Ledge</span>
-        <img class="hat" src="{{ url_for('static', filename='resources/hat.png') }}" alt="scholar-hat">
-        </h1>
-    </header>
-
-
-    <div class="get_started">
-        <button id="getStartedBtn">GET STARTED</button>
+    <div class="container">
+        <div class="left-section">
+            <header>
+                <h1>
+                    <img class="pen" src="{{ url_for('static', filename='resources/pen-draw.gif') }}" alt="Pen-draw-gif">
+                    info<span>Ledge</span>
+                    <img class="hat" src="{{ url_for('static', filename='resources/hat.png') }}" alt="scholar-hat">
+                </h1>
+            </header>            
+            <div class="get_started">
+                <button id="getStartedBtn">GET STARTED</button>
+            </div>
+        </div>
+        
+        <div class="right-section">
+        </div>
     </div>
 
 <!-- Modal Popup -->
@@ -27,7 +32,7 @@
                 <form method="POST" action="{{url_for('auth.landing_page')}}">
                     <button type="submit" class="modal-btn login-btn"><img src="{{ url_for('static', filename='resources/google-icon-logo-svgrepo-com.svg') }}" alt="google"></button>
                 </form>
-                <a href="{{ url_for('home.home') }}" class="modal-btn no-thanks-btn"><u>Skip for now</u>...</a>
+                <a href="{{ url_for('home.home') }}" class="modal-btn no-thanks-btn">No thanks</a>
             </div>
         </div>
     </div>

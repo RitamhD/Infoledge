@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href=" {{ url_for('static', filename='mermaid.css') }} ">
+
+    <main>
+        <h2>Let's generate your Roadmap</h2>
+        <span>Powered by AI</span>
+        
+        <form id="flowForm">
+            <input type="text", id="userQuery", name="prompt", placeholder="Explain your roadmap here" required>
+            <button type="submit">Generate</button>
+        </form>
+
+        <div id="status"></div>
+
+        <pre id="defaultDiagram" class="mermaid">
+            graph TD
+            A[Start] --> B[Choose a Topic]
+            B --> C[Learn Basics]
+            B --> D[Explore Advanced Topics]
+            C --> E[Do Projects]
+            D --> E
+            E --> F[Mastery]
+        </pre>
+        
+        <div id="diagram" style="display: none;">
+            <div id="download_diagram">
+                <button id="downloadBtn">⬇ Download</button>
+            </div>
+            <div id="diagram_content"></div>
+        </div>
+    </main>
+
+    <script type="module" src="{{ url_for('static', filename='mermaid.js') }}"></script>
+{% endblock %}

@@ -9,11 +9,23 @@ document.getElementById("chat-toggle").addEventListener("click", () => {
   toggleBtn.setAttribute('aria-expanded', isExpanded);
   toggleBtn.setAttribute('aria-label', isExpanded ? "Close chat" : "Open chat");
   toggleBtn.title = isExpanded ? "Close chat" : "Open chat";
+  toggleBtn.textContent = isExpanded ? "Close" : "ask AI";
 
   if (isExpanded) {
-    // Focus input on open
     document.getElementById("user-input").focus();
   }
+
+  document.addEventListener("click", (e) => {
+    if (chatContainer.classList.contains("expanded") && !chatContainer.contains(e.target) && !toggleBtn.contains(e.target)) {
+      chatContainer.classList.remove("expanded");
+      chatContainer.setAttribute('aria-hidden', true);
+      toggleBtn.setAttribute('aria-expanded', false);
+      toggleBtn.setAttribute('aria-label', "Open chat");
+      toggleBtn.title = "Open chat";
+      toggleBtn.textContent = "ask AI";
+    }
+  })
+
 });
 
 // Append a message to the chatbox

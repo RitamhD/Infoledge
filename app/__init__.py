@@ -6,12 +6,14 @@ from dotenv import load_dotenv
 
 from .models.chat_model_setup import Model
 from .models.recommender_model import Recommender
+from .models.roadmap_generator_model import roadmap_model
 
 load_dotenv()
 
+oauth = OAuth()
 chat_model = Model()
 recommender = Recommender()
-oauth = OAuth()
+roadmap_model = roadmap_model
 
 def create_app():
     app = Flask(__name__, template_folder='view', static_folder='static')
@@ -28,12 +30,13 @@ def create_app():
                    client_kwargs = {"scope": "openid profile email"},
     )
     
-    from .routes import auth_bp, home_bp, code_bp, course_bp, chat_bp
+    from .routes import auth_bp, home_bp, code_bp, course_bp, chat_bp, roadmap_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(home_bp)
     app.register_blueprint(code_bp)
     app.register_blueprint(course_bp)
     app.register_blueprint(chat_bp)
+    app.register_blueprint(roadmap_bp)
     
     return app
     
