@@ -7,9 +7,9 @@
         <h2>Let's generate your Roadmap</h2>
         <span>Powered by AI</span>
         
-        <form id="flowForm">
+        <form>
             <input type="text", id="userQuery", name="prompt", placeholder="Explain your roadmap here" required>
-            <button type="submit">Generate</button>
+            <button id="generate" type="submit">Generate</button>
         </form>
 
         <div id="status"></div>
@@ -26,11 +26,11 @@
         
         <div id="diagram" style="display: none;">
             <div id="download_diagram">
-                <button id="downloadBtn">⬇ Download</button>
+                <button id="downloadBtn">⬇️ Download</button>
             </div>
             <div id="diagram_content"></div>
         </div>
     </main>
-
+    
     <script type="module" src="{{ url_for('static', filename='mermaid.js') }}"></script>
 {% endblock %}

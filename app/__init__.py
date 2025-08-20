@@ -6,14 +6,12 @@ from dotenv import load_dotenv
 
 from .models.chat_model_setup import Model
 from .models.recommender_model import Recommender
-from .models.roadmap_generator_model import roadmap_model
 
 load_dotenv()
 
 oauth = OAuth()
 chat_model = Model()
 recommender = Recommender()
-roadmap_model = roadmap_model
 
 def create_app():
     app = Flask(__name__, template_folder='view', static_folder='static')
