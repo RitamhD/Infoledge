@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>Roadmap Prompt: {{ roadmap.prompt }}</h2>
+    <span>Roadmap ID: {{ roadmap.roadmap_id }}</span>
+
+    <div id="diagram"></div>
+
+    <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            
+            mermaid.initialize({ startOnLoad: false });
+            const mermaidCode = `{{ roadmap.mermaid_code | safe }}`;
+            document.getElementById("diagram").innerHTML = `<p style="font-size:1rem;">Rendering Roadmap...</p>`;
+
+            const uniqueId = `flowchart{{roadmap.roadmap_id}}`;
+            const { svg } = await mermaid.render(uniqueId, mermaidCode);
+            document.getElementById("diagram").innerHTML = svg;
+        });
+    </script>
+{% endblock %}

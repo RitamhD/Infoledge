@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<link rel="stylesheet" href=" {{ url_for('static', filename='mermaid.css') }} ">
+<link rel="stylesheet" href=" {{ url_for('static', filename='css/mermaid.css') }} ">
 
     <main>
         <h2>Let's generate your Roadmap</h2>
@@ -25,12 +25,16 @@
         </pre>
         
         <div id="diagram" style="display: none;">
-            <div id="download_diagram">
+            <div id="diagramBtn">
                 <button id="downloadBtn">⬇️ Download</button>
+                <img id="shareBtn" src="{{ url_for('static', filename='resources/share.png')}}" title="Share link">
             </div>
-            <div id="diagram_content"></div>
+
+            <div id="diagram_wrapper">
+                <div id="diagram_content"></div>  
+            </div>
         </div>
     </main>
     
-    <script type="module" src="{{ url_for('static', filename='mermaid.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/mermaid.js') }}"></script>
 {% endblock %}

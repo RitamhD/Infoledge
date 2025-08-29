@@ -3,7 +3,7 @@
 {% block title %} Let's Code {% endblock title %}
 
 {% block content %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='code_platform.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/code_platform.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='codemirror/codemirror-5.65.19/lib/codemirror.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='codemirror/codemirror-5.65.19/theme/dracula.css') }}">
   
@@ -48,5 +48,5 @@
   <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/mode/clike/clike.js') }}"></script>
   <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/mode/python/python.js') }}"></script>
   <script src="{{ url_for('static', filename='codemirror/codemirror-5.65.19/addon/edit/closebrackets.js')}}"></script>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}

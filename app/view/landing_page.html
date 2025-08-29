@@ -3,7 +3,7 @@
 {% block title %}InfoLedge{% endblock title %}
 
 {% block content %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='landingpage_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landingpage_style.css') }}">
     
     <div class="container">
         <div class="left-section">
@@ -22,51 +22,6 @@
         <div class="right-section">
         </div>
     </div>
-
-<!-- Modal Popup -->
-    <div id="choiceModal" class="modal">
-        <div class="modal-content">
-            <h3>Welcome!</h3>
-            <p>Do you want to login?</p>
-            <div class="modal-actions">
-                <form method="POST" action="{{url_for('auth.landing_page')}}">
-                    <button type="submit" class="modal-btn login-btn"><img src="{{ url_for('static', filename='resources/google-icon-logo-svgrepo-com.svg') }}" alt="google"></button>
-                </form>
-                <a href="{{ url_for('home.home') }}" class="modal-btn no-thanks-btn">No thanks</a>
-            </div>
-        </div>
-    </div>
-
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const getStartedBtn = document.getElementById('getStartedBtn');
-        const modal = document.getElementById('choiceModal');
-        const body = document.body;
-        const closeModal = document.getElementById('closeModal');
-        
-        getStartedBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            modal.classList.add('open');
-            body.classList.add('modal-open');
-        });
-        
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.classList.remove('open');
-                body.classList.remove('modal-open');
-            }
-        });
-        
-        if (closeModal) {
-            closeModal.addEventListener('click', function() {
-                modal.classList.remove('open');
-                body.classList.remove('modal-open');
-            });
-        }
-    });
-</script>
     
 {% endblock content %}
     
