@@ -6,15 +6,6 @@
 
 <link rel="stylesheet" href= "{{ url_for('static', filename='css/homepage_style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot_style.css') }}">
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <script>
-      var msg = {{ messages|tojson|safe }};
-      alert(msg);
-    </script>
-  {% endif %}
-{% endwith %}
-
 
 <header>
     <a href="#">About Us</a>
@@ -31,21 +22,21 @@
 <main>
     <div class="content">
         <h1>Choose your option</h1>
-        <div class="content_options" onmouseenter="playVideo(this)" onmouseleave="pauseVideo(this)">
+        <div class="content_options">
             <video src="{{ url_for('static', filename='resources/courses.mp4') }}" muted loop class="hover-video"></video>
             <form action="{{ url_for('home.home') }} " method="POST">
                 <button type="submit" name="action" value="courses" class="option_buttons" id="recommend_courses">Suggest courses</button>
             </form>
         </div>
 
-        <div class="content_options" onmouseenter="playVideo(this)" onmouseleave="pauseVideo(this)">
+        <div class="content_options">
             <video src="{{ url_for('static', filename='resources/typing.mp4') }}" muted loop class="hover-video"></video>
             <form action=" {{ url_for('home.home') }}" method="POST">
                 <button type="submit" name="action" value="codemirror" class="option_buttons" id="code_platform">Let's code</button>
             </form>
         </div>
 
-        <div class="content_options" onmouseenter="playVideo(this)" onmouseleave="pauseVideo(this)">
+        <div class="content_options">
             <video src="{{ url_for('static', filename='resources/roadmap.mp4') }}" muted loop class="hover-video" style="object-fit:cover;"></video>
             <form action=" {{ url_for('home.home') }}" method="POST">
                 <button type="submit" name="action" value="mermaid" class="option_buttons" id="roadmap_platform">Generate Roadmap</button>
@@ -69,7 +60,7 @@
 
 
   <script src="{{ url_for('static', filename='js/chatbot_script.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
 

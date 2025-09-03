@@ -1,6 +1,6 @@
 import os
 from datetime import timedelta
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
@@ -39,7 +39,7 @@ def create_app():
     #------------------ JWT -----------------------#
     app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY")
     app.config['JWT_TOKEN_LOCATION'] = ["cookies"]
-    app.config['JWT_COOKIE_SECURE'] = True     # True on HTTPS
+    app.config['JWT_COOKIE_SECURE'] = False     # True on HTTPS
     app.config['JWT_COOKIE_SAMESITE'] = "Lax"
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)
     app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)
@@ -58,7 +58,7 @@ def create_app():
     
     @jwt.expired_token_loader
     def expired_token_callback(callback):
-        return jsonify({"error": "token_expired"}), 401
+        return redirect('auth.landing_page'), 401
         
     
     #------------------ OAuth (Google) -----------------------#
@@ -70,6 +70,13 @@ def create_app():
                    client_kwargs = {"scope": "openid profile email"},
     )
     
+    #------------------ 404 Error Handler -------------------------#
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
+    
+    
+    
     # Blueprints – imported from app/routes/__init__.py
     from .routes import auth_bp, home_bp, code_bp, course_bp, chat_bp, roadmap_bp
     app.register_blueprint(auth_bp)
@@ -78,6 +85,7 @@ def create_app():
     app.register_blueprint(course_bp)
     app.register_blueprint(chat_bp)
     app.register_blueprint(roadmap_bp)
+    
     
     # Create tables if not exists
     with app.app_context():

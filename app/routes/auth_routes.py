@@ -7,7 +7,7 @@ from flask_jwt_extended import (
     create_access_token, create_refresh_token,
     set_access_cookies, set_refresh_cookies,
     unset_jwt_cookies, jwt_required, get_jwt_identity,
-    verify_jwt_in_request
+    get_jwt, verify_jwt_in_request
 )
 from sqlalchemy.exc import IntegrityError
 
@@ -16,24 +16,17 @@ auth_bp = Blueprint("auth", __name__)
 
 
 # ---------------- Landing page ----------------
+@jwt_required(optional=True)
 @auth_bp.get("/")
 def landing_page():
     try:
-        verify_jwt_in_request(optional=True)
-        current_user=get_jwt_identity()
-        if current_user:
-            return redirect(url_for("home.home"))
+        identity=get_jwt_identity()
+        if identity:
+            return redirect(url_for("home.home"), user_name=identity["name"])
     except Exception:
         pass
     # No token -> show landing page
     return render_template("landing_page.html")
-
-@auth_bp.post("/profile")
-@jwt_required
-def profile():
-    current_user = get_jwt_identity()
-    return jsonify({"message": "Profile accessed", "user": current_user}), 200
-
 
 
 # ---------------- Google OAuth ----------------
@@ -54,11 +47,15 @@ def google_signin():
             "name": user_info.get("name"),
             "access_token": token.get("access_token")
         }
-        
         # JWT token
-        identity = user_info.get("email")
-        access_token = create_access_token(identity=identity)
-        refresh_token = create_refresh_token(identity=identity)
+        access_token = create_access_token(
+            identity=user_info.get("email"),  # must be string/int
+            additional_claims={"id": user_info.get("id"), "name": user_info.get("name")}
+        )
+        refresh_token = create_refresh_token(
+            identity=user_info.get("email"),
+            additional_claims={"id": user_info.get("id"), "name": user_info.get("name")}
+        )
         
         user_name = user_info.get("name", None)
         resp = redirect(url_for('home.home', user_name=user_name))
@@ -71,6 +68,18 @@ def google_signin():
         
 
 # ---------------- Local Auth (SQL + JWT) ----------------
+@auth_bp.get('/profile')
+@auth_bp.get('/debug')
+def profile():
+    try:
+        verify_jwt_in_request()  # will raise exception if token invalid
+        identity = get_jwt_identity()
+        claims = get_jwt()
+        return jsonify({"identity": identity, "claims": claims})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 401
+
+# Register/Sign UP
 @auth_bp.post("/register")
 def register():
     data = request.get_json(silent=True)
@@ -89,26 +98,37 @@ def register():
     if len(password) < 8:
         return jsonify({"error": "Password must be at least 8 characters long."}), 400
     
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify({"error": "Email already exists...Try Logging in"}), 409
+    
     user = User.create(email=email, name=name, password=password)
     db.session.add(user)
     
     try:
         db.session.commit()
-    except IntegrityError:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({"error": "Email already exists...Try Log in"}), 409
+        return jsonify({"error": e}), 409
     
     # issue tokens so the user is logged in immediately
-    identity = {"id": user.id, "email": user.email}
-    access_token = create_access_token(identity=identity)
-    refresh_token = create_refresh_token(identity=identity)
+    identity = user.email
+    additional_claims = {"id": user.id, "name": user.name}
+    access_token = create_access_token(
+        identity=identity,  # must be string/int
+        additional_claims=additional_claims
+    )
+    refresh_token = create_refresh_token(
+        identity=identity,
+        additional_claims=additional_claims
+    )
     
-    resp = jsonify({"message": "User registered successfully", "redirect": url_for('home.home')})
+    resp = jsonify({"message": "User registered successfully", "redirect": url_for('home.home', user_name=user.name)})
     set_access_cookies(resp, access_token)
     set_refresh_cookies(resp, refresh_token)
     return resp, 201
 
-
+# Login
 @auth_bp.post("/login")
 def login():
     data = request.get_json(silent=True)
@@ -127,21 +147,30 @@ def login():
     if (not user) or (not user.check_password(password)):
         return jsonify({"error": "Invalid credentials"}), 401
     #  Create tokens
-    identity = {"id": user.id, "email": user.email}
-    access_token = create_access_token(identity=identity)
-    refresh_token = create_refresh_token(identity=identity)
+    identity = user.email
+    additional_claims = {"id": user.id, "name": user.name}
+    access_token = create_access_token(
+        identity=identity,  # must be string/int
+        additional_claims=additional_claims
+    )
+    refresh_token = create_refresh_token(
+        identity=identity,
+        additional_claims=additional_claims
+    )
     # Send tokens in cookies
-    resp = jsonify({"message": "Login Successful", "redirect": url_for('home.home')})
+    resp = jsonify({"message": "Login Successful", "redirect": url_for('home.home', user_name=user.name)})
     set_access_cookies(resp, access_token)
     set_refresh_cookies(resp, refresh_token)
     return resp, 200
 
-
+#  Refresh
 @auth_bp.post("/refresh")
 @jwt_required(refresh=True)
 def refresh():
     identity = get_jwt_identity()
-    access_token = create_access_token(identity=identity)
+    claims = get_jwt()
+    additional_claims = {"id": claims["id"], "name": claims["name"]}
+    access_token = create_access_token(identity=identity, additional_claims=additional_claims)
     resp = jsonify({"message": "token refreshed"})
     set_access_cookies(resp, access_token)
     return resp, 200

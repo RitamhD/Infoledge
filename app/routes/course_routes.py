@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request, jsonify
-from app.decorators import login_required
 from app import recommender
 
 

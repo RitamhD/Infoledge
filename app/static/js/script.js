@@ -1,45 +1,42 @@
+import { startScheduledRefresh } from "./jwt_auth.js";
 
-
-function playVideo(container){
-    const video = container.querySelector('video');
-    if (video){
-        video.play();
+window.addEventListener("DOMContentLoaded", () => {
+    startScheduledRefresh(25);
+    
+    
+    function playVideo(container){
+        const video = container.querySelector('video');
+        if (video){
+            video.play();
+        }
     }
-}
-
-function pauseVideo(container){
-    const video = container.querySelector('video');
-    if (video){
-        video.pause();
+    
+    function pauseVideo(container){
+        const video = container.querySelector('video');
+        if (video){
+            video.pause();
+        }
     }
-}
+    
+    const contentOptions = document.getElementsByClassName('content_options');
+    
+    Array.from(contentOptions).forEach(container => {
+        container.addEventListener('mouseenter', () => playVideo(container));
+        container.addEventListener('mouseleave', () => pauseVideo(container));
+    })
+});
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var editorPython = CodeMirror.fromTextArea(document.getElementById('editor'), {
-    name: "python",
-    version: 3,
-    theme: "dracula",
-    lineNumbers: true,
-    defaultTextHeight: 10,
-    autoCloseBrackets: true,
-    indentWithTabs: true,
-    smartIndent: false,
-}); 
+// var editorPython = CodeMirror.fromTextArea(document.getElementById('editor'), {
+//     name: "python",
+//     version: 3,
+//     theme: "dracula",
+//     lineNumbers: true,
+//     defaultTextHeight: 10,
+//     autoCloseBrackets: true,
+//     indentWithTabs: true,
+//     smartIndent: false,
+// }); 
 // var editorCpp = CodeMirror.fromTextArea(document.getElementById('editor'), {
 //     mode: "text/x-c++src",
 //     theme: "dracula",
@@ -54,36 +51,16 @@ var editorPython = CodeMirror.fromTextArea(document.getElementById('editor'), {
 //     autoCloseBrackets: true
 // });
 
-var width = window.innerWidth;
-editorPython.setSize(0.7*width, "600");
+// var width = window.innerWidth;
+// editorPython.setSize(0.7*width, "600");
 // editorCpp.setSize(0.7*width, "600")
 // editorJava.setSize(0.7*width, "600")
 
 
-let defaultText = "#---Let's code---\nprint('Hello World!')";
-let blankLines = '\n'.repeat(5);
-editorPython.getWrapperElement().style.fontSize = '16px';
-editorPython.setValue(defaultText+blankLines);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// let defaultText = "#---Let's code---\nprint('Hello World!')";
+// let blankLines = '\n'.repeat(5);
+// editorPython.getWrapperElement().style.fontSize = '16px';
+// editorPython.setValue(defaultText+blankLines);
 
 
 // // Select all buttons with the class 'playButton'
