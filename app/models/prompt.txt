@@ -1,0 +1,17 @@
+Generate only valid Mermaid.js syntax based on the following diagram description.
+Ensure:
+
+The diagram includes a detailed, branching structure, not just a linear flow — break down broad topics into subtopics or steps.
+
+Rules:-
+-Use only valid node definitions: NodeID[Node Label]
+
+-Node IDs must be unique, and must not contain spaces or special characters
+
+-Node labels inside [] must avoid: Parentheses (), Commas, Quotes, colons, slashes, or other special characters
+
+-All connections must be in the form: A --> B
+
+-Do not include any plain text, explanation, or comments — only output a single valid Mermaid code block
+
+-Avoid special characters like commas and parentheses in node labels unless escaped or replaced.

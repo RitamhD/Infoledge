@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+
+<link rel="stylesheet" href= "{{ url_for('static', filename='css/homepage_style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot_style.css') }}">
+
+<header>
+    <a href="#">About Us</a>
+    <a href="#">Services</a>
+    <div id="logout">
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+            <button type="submit">
+                <img src="{{ url_for('static', filename='resources/logout.png') }}" alt="Logout">
+            </button>
+        </form>
+    </div>
+</header>
+
+<main>
+    <div class="content">
+        <h1>Choose your option</h1>
+        <div class="content_options">
+            <video src="{{ url_for('static', filename='resources/courses.mp4') }}" muted loop class="hover-video"></video>
+            <form action="{{ url_for('home.home') }} " method="POST">
+                <button type="submit" name="action" value="courses" class="option_buttons" id="recommend_courses">Suggest courses</button>
+            </form>
+        </div>
+
+        <div class="content_options">
+            <video src="{{ url_for('static', filename='resources/typing.mp4') }}" muted loop class="hover-video"></video>
+            <form action=" {{ url_for('home.home') }}" method="POST">
+                <button type="submit" name="action" value="codemirror" class="option_buttons" id="code_platform">Let's code</button>
+            </form>
+        </div>
+
+        <div class="content_options">
+            <video src="{{ url_for('static', filename='resources/roadmap.mp4') }}" muted loop class="hover-video" style="object-fit:cover;"></video>
+            <form action=" {{ url_for('home.home') }}" method="POST">
+                <button type="submit" name="action" value="mermaid" class="option_buttons" id="roadmap_platform">Generate Roadmap</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- Chatbot section -->
+  <button id="chat-toggle" aria-expanded="false" aria-controls="chat-container" aria-label="Open chat" title="Open chat">
+  ask AI
+  </button>
+
+  <div id="chat-container" aria-hidden="true">
+    <div id="chatbox"></div>
+    <div class="input-row">
+      <input id="user-input" type="text" placeholder="Ask your doubt..." autocomplete="off" />
+      <button id="send">Send</button>
+    </div>
+  </div>
+
+
+  <script src="{{ url_for('static', filename='js/chatbot_script.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
+
+
+{% endblock %}

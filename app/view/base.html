@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Default{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='resources/hat.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal_popup.css') }}">
+</head>
+
+<body>
+    {% block content %} {% endblock %}
+
+    {% include 'components/modal_popup.html' %}
+    
+    {% block script %} {% endblock %}
+    
+    <script type="module" src="{{ url_for('static', filename='js/modal_popup.js') }}"></script>
+</body>
+</html>

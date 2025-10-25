@@ -1,0 +1,19 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# environment files
+.env
+
+# version control
+.git
+.gitignore
+
+# log files
+*.log
+
+# virtual environment
+venv/
+
+# database
+/instance

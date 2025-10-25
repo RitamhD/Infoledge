@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="header">
+        <div>
+            <img src="{{ url_for('static', filename='resources/404_error.png') }}" alt="404">
+        </div>
+        <form action="{{ url_for('home.home') }}" method="POST">
+            <button><img src="{{ url_for('static', filename='resources/backarrow.png') }}" alt="back home"> Back to homepage </button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/finisher-header.es5.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        new FinisherHeader({
+        "count": 4,
+        "size": {
+            "min": 500,
+            "max": 1500,
+            "pulse": 0
+        },
+        "speed": {
+            "x": {
+            "min": 0,
+            "max": 0.2
+            },
+            "y": {
+            "min": 0,
+            "max": 0
+            }
+        },
+        "colors": {
+            "background": "#000000",
+            "particles": [
+            "#ffc100"
+            ]
+        },
+        "blending": "lighten",
+        "opacity": {
+            "center": 0,
+            "edge": 0.15
+        },
+        "skew": 0,
+        "shapes": [
+            "s"
+        ]
+        });
+    </script>
+
+{% endblock %}
