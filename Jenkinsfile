@@ -48,7 +48,7 @@ pipeline {
     post {
         success {
             echo '✅ Deployment complete.'
-            emailtext(
+            emailext(
                 subject: "✅ SUCCESS: Jenkins Build #${BUILD_NUMBER}",
                 body: """<p>Hi,</p>
                         <p>The Jenkins build for <b>${JOB_NAME}</b> completed successfully!</p>
@@ -59,7 +59,7 @@ pipeline {
         }
 
         failure {
-            echo '❌Build failed.'
+            echo '❌ Build failed.'
             emailext(
                 subject: "❌ FAILURE: Jenkins Build #${BUILD_NUMBER}",
                 body: """<p>Hi,</p>
