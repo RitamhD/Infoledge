@@ -1,6 +1,5 @@
 import re
-from langchain_ollama import ChatOllama
-from langchain_core.messages import SystemMessage, HumanMessage
+from ollama import Client
 
 
 system_prompt = """
@@ -23,35 +22,35 @@ Rules:-
 -Avoid special characters like commas and parentheses in node labels unless escaped or replaced.
 """
 
-
-class RoadmapModel():
+class RoadmapModel:
+    model2 = "qwen2.5-coder:7b-cloud"
+    model1 = "qwen3-coder:480b-cloud"
+    
     def __init__(self):
-        self.roadmap_model = ChatOllama(model="qwen2.5-coder:7b", temperature=0.8,)
+        self.client = Client()  # uses logged-in Ollama credentials
+        self.model_name = self.model1
         self.system_prompt = system_prompt
-        
-        
+
     def generate_mermaid_code(self, user_prompt):
-        response = self.roadmap_model.invoke([
-            SystemMessage(content=self.system_prompt),
-            HumanMessage(content=user_prompt)
-        ])
-        mermaid_code = self.extract_mermaid_code(response.content)
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
+
+        response = self.client.chat(self.model_name, messages=messages)
+        print(response)
+        full_reply = response['message']['content']
+        mermaid_code = self.extract_mermaid_code(full_reply)
         return mermaid_code
-        
-        
+
     def extract_mermaid_code(self, text: str) -> str:
-        """Extracts and sanitizes Mermaid diagram code from the LLM response.
-        Strips ```mermaid ... ``` fences, cleans node labels, and extra whitespace."""
-        
-        # Extracting inside ```mermaid ... ```
         match = re.search(r"```mermaid\s*(.*?)```", text, re.DOTALL)
         code = match.group(1).strip() if match else text.strip()
 
-        # Sanitize node labels: force safe characters inside []
         def sanitize_labels(match):
             p1 = match.group(1)
-            safe_text = re.sub(r"[\[\]\(\)\{\}]", "", p1)  # stripping special chars
+            safe_text = re.sub(r"[\[\]\(\)\{\}]", "", p1)
             return f"[{safe_text}]"
         
-        self.code = re.sub(r"\[(.*?)\]", sanitize_labels, code)
+        code = re.sub(r"\[(.*?)\]", sanitize_labels, code)
         return code
