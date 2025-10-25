@@ -60,7 +60,7 @@ pipeline {
 
         failure {
             echo '❌Build failed.'
-            emailext(
+            emailtext(
                 subject: "❌ FAILURE: Jenkins Build #${BUILD_NUMBER}",
                 body: """<p>Hi,</p>
                         <p>The Jenkins build for <b>${JOB_NAME}</b> has failed.</p>
