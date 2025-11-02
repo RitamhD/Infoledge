@@ -1,12 +1,15 @@
+import os
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class Recommender:
     def __init__(self):
         self.embedding_model = HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2')
         self.vectorstore = Chroma(
             embedding_function=self.embedding_model,
-            persist_directory='app/models/embeddings',
+            persist_directory=os.path.join(BASE_DIR, 'models/embeddings'),
             collection_name='course_embeddings'
         )
     
