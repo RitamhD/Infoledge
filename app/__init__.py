@@ -7,7 +7,7 @@ from flask_jwt_extended import JWTManager
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 
-from .models.chat_model_setup import Model
+from .models.chatbot_folder.chat_model_setup import Model
 from .models.recommender_model import Recommender
 
 load_dotenv()
@@ -30,7 +30,7 @@ def create_app():
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
     
     #------------------ Database -----------------------#
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///app.db"
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     db.init_app(app)
@@ -39,6 +39,8 @@ def create_app():
     #------------------ JWT -----------------------#
     app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY")
     app.config['JWT_TOKEN_LOCATION'] = ["cookies"]
+    app.config["JWT_ACCESS_COOKIE_NAME"] = "access_token_cookie"
+    app.config["JWT_REFRESH_COOKIE_NAME"] = "refresh_token_cookie"
     app.config['JWT_COOKIE_SECURE'] = False     # True on HTTPS
     app.config['JWT_COOKIE_SAMESITE'] = "Lax"
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)
@@ -59,7 +61,6 @@ def create_app():
     @jwt.expired_token_loader
     def expired_token_callback(callback):
         return redirect('auth.landing_page'), 401
-        
     
     #------------------ OAuth (Google) -----------------------#
     oauth.init_app(app=app)
@@ -77,7 +78,7 @@ def create_app():
     
     
     
-    # Blueprints – imported from app/routes/__init__.py
+    # Blueprints imported from app/routes/__init__.py
     from .routes import auth_bp, home_bp, code_bp, course_bp, chat_bp, roadmap_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(home_bp)
@@ -86,6 +87,10 @@ def create_app():
     app.register_blueprint(chat_bp)
     app.register_blueprint(roadmap_bp)
     
+    # Importing database models
+    from app.models.user import User
+    from app.models.chatbot_folder.chats import ChatSession
+    from app.models.roadmaps_folder.roadmaps import Roadmap
     
     # Create tables if not exists
     with app.app_context():

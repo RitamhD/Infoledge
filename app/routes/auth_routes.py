@@ -25,7 +25,6 @@ def landing_page():
             return redirect(url_for("home.home"), user_name=identity["name"])
     except Exception:
         pass
-    # No token -> show landing page
     return render_template("landing_page.html")
 
 
@@ -72,14 +71,14 @@ def google_signin():
 @auth_bp.get('/debug')
 def profile():
     try:
-        verify_jwt_in_request()  # will raise exception if token invalid
+        verify_jwt_in_request()
         identity = get_jwt_identity()
         claims = get_jwt()
         return jsonify({"identity": identity, "claims": claims})
     except Exception as e:
         return jsonify({"error": str(e)}), 401
 
-# Register/Sign UP
+# Sign Up
 @auth_bp.post("/register")
 def register():
     data = request.get_json(silent=True)
@@ -123,7 +122,11 @@ def register():
         additional_claims=additional_claims
     )
     
-    resp = jsonify({"message": "User registered successfully", "redirect": url_for('home.home', user_name=user.name)})
+    # resp = jsonify({"message": "User registered successfully", "redirect": url_for('home.home', user_name=user.name)})
+    resp = jsonify({
+        "message": "User registered successfully",
+        "redirect": "/home"
+    })
     set_access_cookies(resp, access_token)
     set_refresh_cookies(resp, refresh_token)
     return resp, 201
@@ -158,7 +161,11 @@ def login():
         additional_claims=additional_claims
     )
     # Send tokens in cookies
-    resp = jsonify({"message": "Login Successful", "redirect": url_for('home.home', user_name=user.name)})
+    # resp = jsonify({"message": "Login Successful", "redirect": url_for('home.home', user_name=user.name)})
+    resp = jsonify({
+        "message": "Login successful",
+        "redirect": "/home"
+    })
     set_access_cookies(resp, access_token)
     set_refresh_cookies(resp, refresh_token)
     return resp, 200

@@ -1,6 +1,6 @@
 import time
-from flask import Blueprint, render_template, request, jsonify, flash
-from ..models.roadmap_generator_model import RoadmapModel
+from flask import Blueprint, render_template, request, jsonify
+from ..models.roadmaps_folder.roadmap_generator_model import RoadmapModel
 
 
 roadmap_bp = Blueprint("roadmap", __name__)

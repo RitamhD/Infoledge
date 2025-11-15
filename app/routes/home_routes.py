@@ -7,8 +7,9 @@ home_bp = Blueprint("home", __name__)
 @home_bp.route('/home/<user_name>', methods=["GET", "POST"])
 @jwt_required(optional=True)
 def home(user_name=None):
+    identity = get_jwt_identity()
     if request.method == "GET":
-        identity = get_jwt_identity()
+        # return render_template('home.html')
         if identity:
             claims = get_jwt()
             user_name = claims.get("name")
