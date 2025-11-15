@@ -64,9 +64,8 @@ def google_signin():
         
 
 # ---------------- Local Auth (SQL + JWT) ----------------
-@auth_bp.get('/profile')
 @auth_bp.get('/debug')
-def profile():
+def debug():
     try:
         verify_jwt_in_request()
         identity = get_jwt_identity()
@@ -74,6 +73,15 @@ def profile():
         return jsonify({"identity": identity, "claims": claims})
     except Exception as e:
         return jsonify({"error": str(e)}), 401
+
+@auth_bp.get('/dashboard/')
+@auth_bp.get('/dashboard/<user_name>')
+@jwt_required()
+def dashboard(user_name=None):
+    claims=get_jwt()
+    user_name=claims.get("name")
+    email=claims.get("email")
+    return render_template("dashboard.html", user_name=user_name, email=email)
 
 # Sign Up
 @auth_bp.post("/register")
@@ -172,12 +180,12 @@ def login():
     if user.name:
         flash(f"Welcome back, {user.name} !", "success")
     else:
-        flash("Logged in Successfully !", "success")
+        flash("Logged in successfully !", "success")
     return resp, 200
 
 #  Refresh
 @auth_bp.post("/refresh")
-@jwt_required(refresh=True)
+@jwt_required()
 def refresh():
     identity = get_jwt_identity()
     claims = get_jwt()
@@ -204,4 +212,5 @@ def logout():
     
     resp = redirect(url_for('auth.landing_page'))
     unset_jwt_cookies(resp)
+    flash("Logged out successfully", "info")
     return resp

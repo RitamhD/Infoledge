@@ -1,11 +1,15 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request
 from flask_jwt_extended import get_jwt, jwt_required
 
 home_bp = Blueprint("home", __name__)
 
+@home_bp.before_request
+@jwt_required()
+def protected():
+    pass
+
 @home_bp.route('/home', methods=["GET", "POST"])
 @home_bp.route('/home/<user_name>', methods=["GET", "POST"])
-@jwt_required()
 def home(user_name=None):
     claims = get_jwt()
     user_name = claims.get("name")

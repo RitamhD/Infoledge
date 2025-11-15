@@ -1,12 +1,17 @@
 import os
 from flask import Blueprint, request, session, jsonify, Response
+from flask_jwt_extended import jwt_required
 from app import chat_model
 
 
 chat_bp = Blueprint("chat", __name__)
 
+@chat_bp.before_request
+@jwt_required()
+def protected():
+    pass
+
 @chat_bp.route("/chat", methods=["POST"])
-# @login_required
 def chat():
     data = request.get_json(force=True)
     user_message = data.get("message", "").strip()
@@ -22,7 +27,6 @@ def chat():
 
 
 @chat_bp.route("/stream-chat", methods=["POST"])
-# @login_required
 def stream_chat():
     data = request.get_json(force=True)
     user_message = data.get("message", "").strip()

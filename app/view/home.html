@@ -10,13 +10,14 @@
 <header>
     <a href="#">About Us</a>
     <a href="#">Services</a>
-    <div id="logout">
+    <a href="{{ url_for('auth.dashboard') }}">My account</a>
+    <!-- <div id="logout">
         <form action="{{ url_for('auth.logout') }}" method="POST">
             <button type="submit">
                 <img src="{{ url_for('static', filename='resources/logout.png') }}" alt="Logout">
             </button>
         </form>
-    </div>
+    </div> -->
 </header>
 
 <main>

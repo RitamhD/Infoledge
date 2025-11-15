@@ -1,0 +1,58 @@
+.dashboard-container {
+  width: 85%;
+  margin: auto;
+  margin-top: 40px;
+  color: white;
+}
+
+.glass-box {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 0 12px rgba(0,255,255,0.2);
+}
+
+.user-card h2 {
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 18px;
+  margin-top: 25px;
+}
+
+.dash-btn {
+  display: block;
+  background: linear-gradient(135deg, #00f2ff, #007bff);
+  padding: 12px;
+  text-align: center;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.dash-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 12px #00f2ff;
+}
+
+.logout-btn {
+  display: block;
+  padding: 12px;
+  text-align: center;
+  color: #ff4d4d;
+  border: 1px solid #ff4d4d;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #ff4d4d;
+  color: white;
+}

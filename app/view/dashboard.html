@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+<div class="dashboard-container">
+
+<!-- USER INFO CARD -->
+<div class="user-card glass-box">
+    <div class="user-info">
+    <h2>{{ user_name }}</h2>
+    <p>{{ email }}</p>
+    </div>
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="actions-grid">
+    <a href="{{ url_for('code.code_platform') }}" class="dash-btn">Code Editor</a>
+    <a href="{{ url_for('roadmap.generate_roadmap') }}" class="dash-btn">My Roadmaps</a>
+    <a href="{{ url_for('course.recommend_courses') }}" class="dash-btn">My Courses</a>
+</div>
+
+<!-- ACCOUNT -->
+<div class="account-box glass-box">
+    <a href="{{ url_for('auth.logout') }}" class="logout-btn">Logout</a>
+</div>
+
+</div>
+
+{% endblock %}

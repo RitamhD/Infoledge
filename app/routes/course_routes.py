@@ -1,11 +1,16 @@
 from flask import Blueprint, render_template, request, jsonify
+from flask_jwt_extended import jwt_required
 from app import recommender
 
 
 course_bp = Blueprint('course', __name__)
 
+@course_bp.before_request
+@jwt_required()
+def protected():
+    pass
+
 @course_bp.route('/recommend_courses', methods=["GET", "POST"])
-# @login_required
 def recommend_courses():
     if request.method == "GET":
         return render_template('courses.html')
@@ -20,7 +25,6 @@ def recommend_courses():
 
 
 @course_bp.route('/recommend', methods=["POST"])
-# @login_required
 def recommend():
     data = request.get_json()
     query = data.get("query", "")

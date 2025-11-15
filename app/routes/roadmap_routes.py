@@ -1,9 +1,16 @@
 import time
+from flask_jwt_extended import jwt_required
 from flask import Blueprint, render_template, request, jsonify
 from ..models.roadmaps_folder.roadmap_generator_model import RoadmapModel
 
 
 roadmap_bp = Blueprint("roadmap", __name__)
+
+@roadmap_bp.before_request
+@jwt_required()
+def protect_dashboard():
+    pass
+
 
 roadmap_model = RoadmapModel()
 
