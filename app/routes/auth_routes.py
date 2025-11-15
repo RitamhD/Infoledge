@@ -16,15 +16,12 @@ auth_bp = Blueprint("auth", __name__)
 
 
 # ---------------- Landing page ----------------
-@jwt_required(optional=True)
 @auth_bp.get("/")
+@jwt_required(optional=True)
 def landing_page():
-    try:
-        identity=get_jwt_identity()
-        if identity:
-            return redirect(url_for("home.home"), user_name=identity["name"])
-    except Exception:
-        pass
+    identity=get_jwt_identity()
+    if identity:
+        return redirect(url_for('home.home'))
     return render_template("landing_page.html")
 
 
@@ -129,6 +126,10 @@ def register():
     })
     set_access_cookies(resp, access_token)
     set_refresh_cookies(resp, refresh_token)
+    if user.name:
+        flash(f"Account created successfully for {user.name} !", "success")
+    else:
+        flash("Account created successfully !", "success")
     return resp, 201
 
 # Login
@@ -168,6 +169,10 @@ def login():
     })
     set_access_cookies(resp, access_token)
     set_refresh_cookies(resp, refresh_token)
+    if user.name:
+        flash(f"Welcome back, {user.name} !", "success")
+    else:
+        flash("Logged in Successfully !", "success")
     return resp, 200
 
 #  Refresh

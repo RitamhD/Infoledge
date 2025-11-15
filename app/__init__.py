@@ -1,6 +1,6 @@
 import os
 from datetime import timedelta
-from flask import Flask, jsonify, render_template, redirect
+from flask import Flask, jsonify, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
@@ -52,15 +52,17 @@ def create_app():
     # ---------- JWT Error Handlers ----------
     @jwt.unauthorized_loader
     def unauthorized_callback(callback):
-        return jsonify({"error": "login_required"}), 401
+        flash("Login required", "warning")
+        return redirect(url_for('auth.landing_page'))
     
     @jwt.invalid_token_loader
     def invalid_token_callback(callback):
-        return jsonify({"error": "invalid_token"}), 401
+        return jsonify({"error": "invalid_token"})
     
     @jwt.expired_token_loader
     def expired_token_callback(callback):
-        return redirect('auth.landing_page'), 401
+        flash("Login required", "warning")
+        return redirect(url_for('auth.landing_page'))
     
     #------------------ OAuth (Google) -----------------------#
     oauth.init_app(app=app)

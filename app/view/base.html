@@ -7,9 +7,23 @@
     <title>{% block title %}Default{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='resources/hat.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal_popup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 </head>
 
 <body>
+    <div class="flash-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-message flash-{{ category }}">
+            <span>{{ message }}</span>
+            <button class="flash-close" onclick="this.parentElement.remove();">&times;</button>
+            </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+
     {% block content %} {% endblock %}
 
     {% include 'components/modal_popup.html' %}
