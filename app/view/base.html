@@ -7,7 +7,6 @@
     <title>{% block title %}Default{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='resources/hat.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal_popup.css') }}">
-<<<<<<< HEAD
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 </head>
 
@@ -25,11 +24,6 @@
     {% endwith %}
     </div>
 
-=======
-</head>
-
-<body>
->>>>>>> 5f0416db394212f08a47de8aa1e66ce78c310935
     {% block content %} {% endblock %}
 
     {% include 'components/modal_popup.html' %}

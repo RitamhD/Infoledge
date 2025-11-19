@@ -1,25 +1,15 @@
 import time
-<<<<<<< HEAD
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import verify_jwt_in_request
 from flask import Blueprint, render_template, request, jsonify
 from ..models.roadmaps_folder.roadmap_generator_model import RoadmapModel
-=======
-from flask import Blueprint, render_template, request, jsonify, flash
-from ..models.roadmap_generator_model import RoadmapModel
->>>>>>> 5f0416db394212f08a47de8aa1e66ce78c310935
 
 
 roadmap_bp = Blueprint("roadmap", __name__)
 
-<<<<<<< HEAD
 @roadmap_bp.before_request
-@jwt_required()
-def protect_dashboard():
-    pass
+def protected():
+    verify_jwt_in_request()
 
-
-=======
->>>>>>> 5f0416db394212f08a47de8aa1e66ce78c310935
 roadmap_model = RoadmapModel()
 
 roadmaps = {}
