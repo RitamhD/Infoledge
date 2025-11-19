@@ -1,5 +1,4 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
-
 annotated-types==0.7.0
 anyio==4.10.0
 attrs==25.3.0
@@ -89,6 +88,7 @@ pydantic==2.11.7
 pydantic_core==2.33.2
 Pygments==2.19.2
 PyJWT==2.10.1
+PyMySQL==1.1.2
 PyPika==0.48.9
 pyproject_hooks==1.2.0
 pyreadline3==3.5.4
