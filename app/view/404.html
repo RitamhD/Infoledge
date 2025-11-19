@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{ url_for('static', filename='css/404.css') }}">
 
     <div class="header">
@@ -10,6 +11,16 @@
         <a href="{{ url_for('home.home') }}">
             <button><img src="{{ url_for('static', filename='resources/backarrow.png') }}" alt="back home"> Back to homepage </button>
         </a>
+=======
+
+    <div class="header">
+        <div>
+            <img src="{{ url_for('static', filename='resources/404_error.png') }}" alt="404">
+        </div>
+        <form action="{{ url_for('home.home') }}" method="POST">
+            <button><img src="{{ url_for('static', filename='resources/backarrow.png') }}" alt="back home"> Back to homepage </button>
+        </form>
+>>>>>>> 5f0416db394212f08a47de8aa1e66ce78c310935
     </div>
 
     <script src="{{ url_for('static', filename='js/finisher-header.es5.min.js') }}" type="text/javascript"></script>

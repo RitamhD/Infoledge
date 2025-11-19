@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 # from functools import wraps
 # from flask import session, redirect, url_for, flash, request, jsonify
 # from app import db
 # from .models.user import User
+=======
+from functools import wraps
+from flask import session, redirect, url_for, flash, request, jsonify
+from app import db
+from .models.user import User
+>>>>>>> 5f0416db394212f08a47de8aa1e66ce78c310935
 
 
 # def token_required(f):
